@@ -1,0 +1,36 @@
+Le cas de gestion d'un panier d'achat d'un site e-commerce, qui permet d'ajouter un produit dans un panier
+et de récupérer le contenu du panier.
+
+Règles métier:
+- La quantité de chaque produit ajouté dans le panier est recalculée en fonction de la disponibilité dans le stock
+- Une remise de 10% est appliquée si le montant du panier dépasse 100 €
+
+Les infos liées aux produits sont fournies par un système distant
+La quantité disponible en stock pour chaque produit est fournie par un autre système distant
+
+*******************************************************
+
+Approche DDD: data driven design
+
+- définir les entities: Product, Cart.....
+- définir les repositories: ProductRepo, CartRepo.....
+- définir les services: ProductService, CartService.....
+- définir l'IHM: web, mobile........
+
+*******************************************************
+
+Dans architecture hexagonale (basée sur le métier), un des principes les plus important, c'est le domaine métier qui est au centre de
+cette approche.
+Le domaine ne doit pas avoir de dépendences techniques
+Un deuxième principe de l'approche hexagonale: les dépendences doivent se faire de l'extérieur de l'hexagone vers l'intérieur.
+
+Etape importante: Une fois le domaine mis en place, on doit vérifier son bon fonctionnement (tests unitaires)
+
+L'approche hexagonale ne convient pas à tous les projets. Si le domaine de l'application est riche (complèxe) l'archi. hexa.
+peut s'appliquer et aider à mieux comprendre le domaine métier.
+
+Avantages:
+- Applications facile à tester
+- Un domainemétier complètement indépendant des technos (framework) - on a la possibilté de switcher de techno ou même de faire
+cohabiter pusieurs technos au mm temps.
+- Facilité d'integration de nouveaux membres

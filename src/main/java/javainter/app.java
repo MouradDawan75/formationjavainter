@@ -84,6 +84,13 @@ public class app {
         L: Liskov Substitution: les objets enfants sont substituables aux objets parents
         I: Interface Segregation
         D: Dependency Inversion / Dependency Injection
+
+        Tell don't ask: dites aux objets ce qu'ils doivent faire, ne leur posez pas de question sur leur état.
+        Loi Demeter:
+        Une classe ne doit interagir qu'avec les classes amies.
+        Une méthode définie dans une classe:
+        -peut utiliser ses propres params
+        -peut utiliser ses variables locales ou les attributs de la classes
          */
 
         /*
@@ -102,24 +109,34 @@ public class app {
 
         //Dependency Inversion - Injection
 
-        //option1:
+        //option1: via constructeur
         ContactService contactService = new ContactService(new ContactRepository());
         contactService.computeContact(10);
 
         //Pour un autre répository:
         contactService = new ContactService(new ContactFichierRepository());
 
-        //option2:
+        //option2: via setter
         ContactService setterContactService = new ContactService();
         setterContactService.setContactRepository(new ContactRepository());
 
         setterContactService.setContactRepository(new ContactFichierRepository());
 
-        //option3:
+        //option3: via les params de la méthode
         ContactService paramContactService = new ContactService();
 
         paramContactService.computeContactOther(15, new ContactRepository());
         paramContactService.computeContactOther(15, new ContactFichierRepository());
+
+        /*
+        Designs Patterns d'architecture: mvc,repository,service,dto,mvvm......
+        DDD: Data Driven Design -> conception guidée par les données
+        DDD: Domain Driven Design -> conception guidée par le métier
+        Architecture Hexagonale -> guidée par le métier
+        Architecture orientée service SOA -> Services Oriented Architecture
+
+        Web Service REST - Api REST -> est un style d'architecture -> utilise les méthode du protocole HTTP(Get,Post,Delete,Put)
+         */
     }
 
     //polymorphisme par sous typage: le plus recommandé en pratique
