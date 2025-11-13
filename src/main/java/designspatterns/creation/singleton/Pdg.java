@@ -10,7 +10,7 @@ public class Pdg {
 
     }
 
-    public static Pdg getInstance(String name){
+    public synchronized static Pdg getInstance(String name){
 
         if(instance == null){
             instance = new Pdg();

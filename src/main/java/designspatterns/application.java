@@ -1,5 +1,10 @@
 package designspatterns;
 
+import designspatterns.comportements.chainofresponsability.*;
+import designspatterns.comportements.observer.Client;
+import designspatterns.comportements.observer.Observer;
+import designspatterns.comportements.observer.Produit;
+import designspatterns.comportements.visitor.*;
 import designspatterns.creation.factory.Computer;
 import designspatterns.creation.factory.ComputerFactory;
 import designspatterns.creation.factory.Laptop;
@@ -8,6 +13,9 @@ import designspatterns.creation.prototype.Question;
 import designspatterns.creation.prototype.Reponse;
 import designspatterns.creation.singleton.Pdg;
 import designspatterns.creation.builder.Utilisateur;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class application {
 
@@ -29,8 +37,11 @@ public class application {
 
          */
 
-        System.out.println(">>>>>>>>>>>>>>> Pattern de création:");
+        System.out.println(">>>>>>>>>>>>>>> Patterns de création:");
         //*********************Singleton
+        /*
+        Garantir l'existance d'une seule et unique instance d'une classe donnée dans toute l'application
+         */
 
         System.out.println(">>> Singleton:");
         Pdg pdg1 = Pdg.getInstance("pdg1");
@@ -95,6 +106,62 @@ public class application {
 
         System.out.println(qst2.getTexte());
         System.out.println(qst2.getReponses().get(0).getTexte());
+
+        System.out.println(">>>>>>>>>>>>>>> Patterns de comportement:");
+        /*
+        Très pratique dans une conception basée sur le métier (DDD - Hexagonale)
+        permettent de décrire:
+        - des algorithmes
+        - des comportements entre les objets
+        - des formes de communications entre les objets
+        - d'assigner des responsabilités aux objets pour définir leur comportement
+         */
+
+        System.out.println(">>>> chain of responsability:");
+        /*
+        Pour le mettre en place, if faut avoir une hierarchie d'objets avec un traitement que tous les objets peuvent exécuter.
+        Permet de faire circuler une info dans une chaine d'objets. Chaque objet dans cette chaine, peut soit exécuter le traitement
+        en question, soit le soumettre à l'objet supérieur
+         */
+
+        Teacher teacher = new Teacher("Teacher", new ResponsablePedago("Responsabe Pedago.", new Director("Directeur", null)));
+        teacher.handleComplain(new ComplainRequest(125, 1, "Req1", ComplaintState.OPENED));
+        teacher.handleComplain(new ComplainRequest(666, 2, "Req2", ComplaintState.OPENED));
+        teacher.handleComplain(new ComplainRequest(777, 3, "Req3", ComplaintState.OPENED));
+
+        System.out.println(">>>> Observer:");
+        /*
+        permet de mettre en place un mécanisme de souscription pour envoyer des notifications à des objets
+        concernant des évenements qu'ils observent.
+        2 objets participent à un tel système:
+        Subject( Publisher ): déclenche l'envoi d'une notification
+        Observer (Subscriber):  l'objet qui reçoit la notif.....
+         */
+        Produit prod = new Produit("PC Dell", 1999);
+        Observer<Double> obs1 = new Client("Jean");
+        Observer<Double> obs2 = new Client("Marie");
+
+        prod.attach(obs1);
+        prod.attach(obs2);
+
+        prod.setPrix(1200); // ce changement déclenche l'envoi de 2 notifications
+
+        System.out.println(">>>> Visitor:");
+
+        /*
+        Pour le mettre en place, il faut avoir des objets qui partagent le mm traitement, mais qui diffère selon le type de l'objet
+        Permet de séparer les algorithmes et les objets sur lesquels ils opèrent
+         */
+
+        List<Forme> formes = new ArrayList<>();
+        formes.add(new Rectangle());
+        formes.add(new Cercle());
+
+        formes.forEach(f -> new ExportXmlVisitor());
+        formes.forEach(f -> new ExportJsonVisitor());
+
+
+
 
     }
 }
