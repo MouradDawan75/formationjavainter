@@ -10,7 +10,7 @@ La quantité disponible en stock pour chaque produit est fournie par un autre sy
 
 *******************************************************
 
-Approche DDD: data driven design
+Approche DDD classique: data driven design
 
 - définir les entities: Product, Cart.....
 - définir les repositories: ProductRepo, CartRepo.....
@@ -19,7 +19,7 @@ Approche DDD: data driven design
 
 *******************************************************
 
-Dans architecture hexagonale (basée sur le métier), un des principes les plus important, c'est le domaine métier qui est au centre de
+Dans une architecture hexagonale (basée sur le métier), un des principes les plus important, c'est le domaine métier qui est au centre de
 cette approche.
 Le domaine ne doit pas avoir de dépendences techniques
 Un deuxième principe de l'approche hexagonale: les dépendences doivent se faire de l'extérieur de l'hexagone vers l'intérieur.
@@ -31,6 +31,6 @@ peut s'appliquer et aider à mieux comprendre le domaine métier.
 
 Avantages:
 - Applications facile à tester
-- Un domainemétier complètement indépendant des technos (framework) - on a la possibilté de switcher de techno ou même de faire
-cohabiter pusieurs technos au mm temps.
-- Facilité d'integration de nouveaux membres
+- Un domaine métier complètement indépendant des technos (framework) - on a la possibilté de switcher entre les techno ou même de faire
+cohabiter plusieurs technos au mm temps.
+- Facilité d'intégration de nouveaux membres

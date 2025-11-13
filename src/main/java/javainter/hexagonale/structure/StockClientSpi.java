@@ -6,7 +6,7 @@ public class StockClientSpi implements StockSpi {
     @Override
     public int getProductAvailability(String productRef) {
 
-        //logique
+        //logique: appel du système externe
         return 0;
     }
 }
