@@ -19,9 +19,9 @@ Approche DDD classique: data driven design
 
 *******************************************************
 
-Dans une architecture hexagonale (basée sur le métier), un des principes les plus important, c'est le domaine métier qui est au centre de
+Dans une architecture hexagonale (basée sur le métier), un des principes les plus importants, c'est le domaine métier qui est au centre de
 cette approche.
-Le domaine ne doit pas avoir de dépendences techniques
+Le domaine ne doit pas avoir de dependences techniques
 Un deuxième principe de l'approche hexagonale: les dépendences doivent se faire de l'extérieur de l'hexagone vers l'intérieur.
 
 Etape importante: Une fois le domaine mis en place, on doit vérifier son bon fonctionnement (tests unitaires)
@@ -31,6 +31,6 @@ peut s'appliquer et aider à mieux comprendre le domaine métier.
 
 Avantages:
 - Applications facile à tester
-- Un domaine métier complètement indépendant des technos (framework) - on a la possibilté de switcher entre les techno ou même de faire
+- Un domaine métier complètement indépendant des technos (framework) - on a la possibilté de switcher entre les technos ou même de faire
 cohabiter plusieurs technos au mm temps.
 - Facilité d'intégration de nouveaux membres

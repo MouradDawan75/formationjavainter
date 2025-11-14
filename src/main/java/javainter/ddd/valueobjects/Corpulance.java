@@ -20,8 +20,9 @@ public class Corpulance {
         return height;
     }
 
-    //pas de setter
+    //pas de setter -> sorte de constante
 
+    // 2 value object sont égaux s'ils possèdent les mm attributs
 
     @Override
     public boolean equals(Object o) {

@@ -3,16 +3,16 @@ Il s'agit de représenter le métier directement dans le code, plutôt que de co
 
 Etape importante: définir un vocabulaire commun à l'ensemble des participants:
 Ubiquitous Language  vocabulaire commun à l'ensemble des participants.
-Sert à éliminer toute ambiguité possible et s'assurer que e domaine métier est bien assimilé par tous.
+Sert à éliminer toute ambiguité possible et s'assurer que le domaine métier est bien assimilé par tous.
 Comment le définir: l'ensemble des participants se mettent d'accord sur les termes et les concepts qui seront utilisés.
 Une documentation est générée à l'issue de cette étape.
-Ex: application e-commerce - Customer - Order - Product
+Ex: application e-commerce - Customer - Order - Product -> ne pas utiliser d'autres termes dans le code
 
 Ses termes doivent être utilisés par tout dans le code: package, classes, méthodes, instructions des méthodes, nom des
 
 Anemic Domain Model vs. Rich Domain Model:
 
-Une approche classiqe (basée sur les données) utilise des objets (anemic) ne contenant que des attributs + getter/setter
+Une approche classique (basée sur les données) utilise des objets (anemic) ne contenant que des attributs + getter/setter
 Une approche basée sur le métier, utilise des objets contenant des méthodes métier (remplacer les appels vers les get/set)
 par des méthodes métier (utiliser tell don't ask + demeter)
 

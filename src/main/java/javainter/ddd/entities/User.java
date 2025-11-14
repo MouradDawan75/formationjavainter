@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 /*
-Entity: possède une identité - un cyce de vie (état interne qui évolue)
+Entity: possède une identité - un cycle de vie (état interne qui évolue)
 Value Object: est une sorte d'objet non modifiable
  */
 public class User {
@@ -20,7 +20,7 @@ public class User {
     public User() {
     }
 
-    //2 entity sont égales si elles possèdent le mm
+    //2 entity sont égales si elles possèdent le mm id
 
     @Override
     public boolean equals(Object o) {

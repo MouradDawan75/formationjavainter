@@ -1,9 +1,17 @@
 package designspatterns;
 
 import designspatterns.comportements.chainofresponsability.*;
+import designspatterns.comportements.mediator.ChatRoom;
+import designspatterns.comportements.mediator.ChatUser;
+import designspatterns.comportements.mediator.IChatRoom;
+import designspatterns.comportements.mediator.Participant;
 import designspatterns.comportements.observer.Client;
 import designspatterns.comportements.observer.Observer;
 import designspatterns.comportements.observer.Produit;
+import designspatterns.comportements.state.Commande;
+import designspatterns.comportements.templatemethod.FacebookNetwork;
+import designspatterns.comportements.templatemethod.NetworkTemplateMethod;
+import designspatterns.comportements.templatemethod.TwitterNetwork;
 import designspatterns.comportements.visitor.*;
 import designspatterns.creation.factory.Computer;
 import designspatterns.creation.factory.ComputerFactory;
@@ -13,7 +21,19 @@ import designspatterns.creation.prototype.Question;
 import designspatterns.creation.prototype.Reponse;
 import designspatterns.creation.singleton.Pdg;
 import designspatterns.creation.builder.Utilisateur;
+import designspatterns.structure.composite.CompositeDepartment;
+import designspatterns.structure.composite.Depatement;
+import designspatterns.structure.composite.FinancialDepartment;
+import designspatterns.structure.composite.SalesDepartment;
+import designspatterns.structure.facade.FacadeHelper;
+import designspatterns.structure.facade.MySqlHelper;
+import designspatterns.structure.facade.OracleHelper;
+import designspatterns.structure.proxy.Internet;
+import designspatterns.structure.proxy.ProxyInternet;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -159,6 +179,193 @@ public class application {
 
         formes.forEach(f -> new ExportXmlVisitor());
         formes.forEach(f -> new ExportJsonVisitor());
+
+        System.out.println(">>>> State:");
+
+        /*
+        A utiliser lorsque le comportement d'un objet varie selon son état.
+        Concerne principalement un objet qui peut plusieurs états connus d'avance.
+
+        State propose d'extraire tout le code lié aux états de l'objet et de le mettre
+        dans des classes distinctes.
+
+        Créer une classe pour chaque état de l'objet
+
+        Possibilité d'ajouter de nouveaux états -> code ouvert à 'extension, mais fermé à la modification
+
+        Ex: Commande:  passée - payée - livrée - reçue
+         */
+
+        Commande cmd = new Commande();
+        cmd.printState();
+        cmd.next();
+        cmd.printState();
+        cmd.next();
+        cmd.printState();
+        cmd.next();
+        cmd.printState();
+
+        System.out.println(">>>> Template Method:");
+
+        /*
+        A mettre en place lorsque:
+        des classes contiennent beaucoup de code similaire.
+        Bien que le code est complètement différent d'une classe à une autre, la structure de base reste la mm (mm algorithme)
+
+        Ce pattern permet de mettre en place le squelette d'un algorithme dans une classe mére et laisser les classes filles
+        redéfinir certaines étapes de l'algorithme sans changer la structure
+
+        Pattern qui propose de découper un algorithme en plusieurs étapes, de transformer chaque étape en méthode,
+        ensuite de les regrouper l'ensemble des étapes dans une seule méthode appelée Template Method.
+
+        Seule méthode appelée dans le code
+
+        Ex: Envoi d'un message via les réseaux sociaux: login - send message - logout
+        Beaucoup de traitements similaires dans les réseaux sociaux
+
+
+         */
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        NetworkTemplateMethod network = null;
+        System.out.println("Input user name: ");
+        String userName = reader.readLine();
+        System.out.println("Input password: ");
+        String password = reader.readLine();
+
+        //Message to send
+        System.out.println("Message to send: ");
+        String message = reader.readLine();
+
+        //type text block: pratique pour les chaines multilignes
+        System.out.println("""
+                Choose social network:
+                1- Facebook
+                2- Twitter
+                """);
+
+        int choice = Integer.parseInt(reader.readLine());
+        if(choice == 1){
+            network = new FacebookNetwork(userName,password);
+        }else{
+            network = new TwitterNetwork(userName, password);
+        }
+
+        //appel de template method
+        network.post(message);
+
+        /*
+        Sans template method
+        network.login()
+        network.sendMessage()
+        network.logout()
+         */
+
+        reader.close();
+
+        System.out.println(">>>> Mediator:");
+        /*
+        Permet de réduire les dépendences entre les objets
+        permet de restreindre les communications directes entre les différents objets et de les forcer
+        à collaborer uniquement via un objet intermédiaire.
+
+        Mediator doit connaitre tous les objets et toutes es interactions possibles entre ces objets.
+        Au final les objets vont dépendrent du Mediator
+        Ex: piste d'attérissage (tour de contrôle joue le rôle d'un médiateur) - les salons de chat
+         */
+
+        IChatRoom chatRoom = new ChatRoom();
+        Participant p1 = new ChatUser(chatRoom, "1", "Jean");
+        Participant p2 = new ChatUser(chatRoom, "2", "Claire");
+
+        chatRoom.addUser(p1);
+        chatRoom.addUser(p2);
+
+        p1.send("Hello", "2");
+        p2.send("Bonjour", "1");
+
+
+        System.out.println(">>>>>>>>>>>>>>> Patterns de structure:");
+        /*
+        Appelés aussi patterns de composition
+        Pratique lors d'une conception basée sur l'interaction.
+        Les modèles d'interactions montrent l'interaction du composant en cours de dév. et d'autres systèmes externes (api.bd...)
+        La modélisation de système à système mets en évidence les problèmes de communication qui peuvent subvenir.
+        Proxy, bridge, facade decorator, composite
+         */
+
+        System.out.println(">>>>>>>>>>>>>>> Proxy:");
+        /*
+        Permet de fournir un substitut d'un objet.
+        Un proxy vous donne le contrôle sur l'objet original vous permettant d'effectuer des traitement dessus avant ou après que la demande
+        ne lui parvienne.
+
+        Dans le code, un Proxy est une copie de l'objet original. Les 2 partagent la mm structure
+         */
+
+        Internet internet = new ProxyInternet();
+
+        try{
+            internet.connectTo("dawan.fr");
+            internet.connectTo("123.com");
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println(">>>>>>>>>>>>>>> Bridge:");
+        /*
+        Permet de définir une sorte de pont entre différents systèmes externes fournissants le mm type de contenu
+         */
+
+        System.out.println(">>>>>>>>>>>>>>> Facade:");
+        /*
+        propose un accès simplifié à un ensemble de classes complèxes
+        Ex: application qui appelle une BD distante (MySql, Oracle) et génère des rapports PDF et HTML.
+
+        Il propose en sortie des méthodes répondants aux besoins métiers
+         */
+
+        //Sans Facade
+        System.out.println(">>Sans facade:");
+        String tableName = "employes";
+        Connection cnx = MySqlHelper.getMySqlConnection();
+        MySqlHelper mySqlHelper = new MySqlHelper();
+        mySqlHelper.generateMySqlHtmlReport(tableName, cnx);
+        mySqlHelper.generateMySqlPdfReport(tableName, cnx);
+
+        Connection cnx2 = OracleHelper.getOracleConnection();
+        OracleHelper oracleHelper = new OracleHelper();
+        oracleHelper.generateOracleHtmlReport(tableName, cnx2);
+        oracleHelper.generateOraclePdfReport(tableName, cnx2);
+
+        //Avec Facade
+        System.out.println(">>Avec facade:");
+        FacadeHelper.generateReport(FacadeHelper.DbType.ORACLE, FacadeHelper.ReportType.HTML, tableName);
+        FacadeHelper.generateReport(FacadeHelper.DbType.ORACLE, FacadeHelper.ReportType.PDF, tableName);
+        FacadeHelper.generateReport(FacadeHelper.DbType.MYSQL, FacadeHelper.ReportType.HTML, tableName);
+        FacadeHelper.generateReport(FacadeHelper.DbType.MYSQL, FacadeHelper.ReportType.PDF, tableName);
+
+        System.out.println(">>>>>>>>>>>>>>> Composite:");
+        /*
+        Soit manipuler des objets individuellement
+        soit manipuler une composition d'objets (possèdant un lien)
+         */
+
+        //Manipuler les objets individuelement:
+        Depatement salesDeprtment = new SalesDepartment();
+        Depatement financialDepartment = new FinancialDepartment();
+
+        salesDeprtment.printDepatementName();
+        financialDepartment.printDepatementName();
+
+        //objets liés par la la méthode printDepatementName
+
+        //Manipuler une composition d'objets
+
+        CompositeDepartment compositeDepartment = new CompositeDepartment();
+        compositeDepartment.addDepartement(salesDeprtment);
+        compositeDepartment.addDepartement(financialDepartment);
+        compositeDepartment.printDepatementName();
 
 
 
